@@ -59,25 +59,62 @@ Talker (mouth): 流式接受来自 Thinker 的输出并且输出 speech token
 > 动态帧率 (dynamic frame rate) : 在对视频进行帧抽样时，所用帧率不是固定，而是根据默写外部因素动态调整每秒取多少帧
 
 **Video & TMRoPE** :  
-time-interleaving algorithm for audion and video <br>
-TMoPE :  将原始旋转编码结构为三部分 : temporal, height, width
+ 
+**TMoPE** :  将原始旋转编码结构为三部分 : temporal, height, width
+  - 当含有多个模态，position 编号通过将前一个模态最大位置 ID 递增 1 来初始化
   - for text : identical position IDS, 等价于 1D-RoPE
   - for audio : identical position IDs, 绝对时间位置编码，一个时间 ID 对应 40ms
   - for image : identical temporal IDs, 根据图像块位置分配 height 和 width
   - for video with audio :
-    - identical position IDs 每帧 40ms内，每帧增加1，
+    - audio : identical position IDs 每帧 40ms内，每帧增加1，
+    - video : 看作图像序列，每一帧对应一个 Temporal ,向后递增，height、width 与 image 相同
+    - 由于视频中帧率不固定，根据实际时间动态调整使得每一个 Temporal ID 对应 40ms
 
 > **RoPE (Rotary Position Embedding)** : 一种相对位置编码方式，旋转编码，相对位置建模，无需引入额外参数
 > 
 > **M-RoPE(Multimodal RoPE)** : 一种用于多模态输入位置编码的方法，通过调整RoPE,使不同模态可以共享或对齐空间/时间位置的信息，更好地实现模态融合与交互
->   
 
+time-interleaving algorithm for audion and video <br>
+  - 使模型同时接收视觉和听觉信息
+  - 按照实际时间每 2 秒将视频和音频表示划分为一个片段，在每个 2 秒片段中，将视频表示放在前面，音频表示放在后面，实现"视频 + 音频"地交错排列
+ 
+### Generation
+- Text
 
+- Speech
 
+### design for streaming
 
+## Pre-training
+Qwen2.5-Omni consists of three training stages <br>
+1. 冻结 LLM 参数，训练视觉编码器和音频编码器
+   - LLM 使用 Qwen2.5 初始化, vision encoder 使用 Qwen2.5-VL 初始化 , audio encoder 使用 Whisper-large-v3 初始化
+   - vision encoder 和 audio encoder 在固定的 LLM 上分别训练
+2. 解冻所有参数，在大规模多模态数据上训练以获得全面理解
+   - 限制 maximum token length 为 8192 以提高训练效率
+3. 使用 32k 长度的数据训练以增强长序列数据理解
+   - 将 maximum token length 扩展到 32768 进行训练  
+  
+## Post-training
+### Thinker
+- 使用 ChatML 格式的 instruction-following data 进行指令微调
+- 数据集包含 : 纯基于文本的对话数据，视觉模态对话数据，音频模态对话数据，混合模态对话数据
 
+> **post-traing** : 指模型在完成预训练后，为更好地适应特定任务、特定场景，进行的进一步微调对齐或优化的阶段。
+>   > 指令微调 (SFT) ：学会根据指令完成任务
+>   > 人类反馈强化学习(RLHF) : 让模型输出更符合人类偏好
 
+### Talker     
+Talker consists three-stages training process    
+1. train Talker to learn context continuation
+   - 利用类似 Thinker 的文本监督和自回归语音延续任务学习上下文各种属性(eg:韵律、情感、口音等)
+   - 实施音色解缠技术以防止模型将特定深部与不常见的文本模式相关联
+3. 使用 DPO 增强对话生成稳定性
+4. apply 
+> **DPO** : 
+> **timbre disentanglement** : 
 
+## Evaluation
 
 ## todo list
 - Mini-Omni
