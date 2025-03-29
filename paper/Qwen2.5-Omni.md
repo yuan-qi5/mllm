@@ -5,7 +5,8 @@
 
 ### What is Qwen2.5-Omni ?
 端到端多模态(text,image,audio,video)大模型,可同时流式产生 text 和 natural speech
-> streaming manner ：模型一边生成内容，一边将结果逐步输出，与普通生成相对(non-straming) <br>
+> streaming manner ：模型一边生成内容，一边将结果逐步输出，与普通生成相对(non-straming)
+> 
 > end-to-end : 直接从输入到输出，中间所有步骤都由一个整体模型自动完成，无需手工干预(eg:特征工程)或中间处理步骤
 
 ### What challenges does Omni model face ?   
@@ -40,10 +41,13 @@ Talker (mouth): 流式接受来自 Thinker 的输出并且输出 speech token
 
 **audio input & audio from video** : Qwen2-Audio encoder
   - 先重采样至 16kHZ 的频率，再将原始波形转换为具有 128 通道的 Mel频谱图，所使用窗口大小为 25ms,跳帧(步长)为 10ms
-  - 
-> **采样率 (sampling rate)** : 单位时间内从连续音频信号中采集样本的次数，通常单位为 赫兹 HZ 或 kHZ(千赫) eg : 16kHZ 采样率指每秒采集16,000个样本点  <br> 
-> **原始音频波形 (raw waveform)** : 采样后得到的一维时间序列，是一长串浮点数/整数，每个值表示声波再某一时间点的振幅大小 <br>
-> **Mel 频谱图 (Mel-Spectrogram)** : 将音频波形转化为"时间 * 频率形式的二维图像"，其中频率轴式按人耳听觉感知方式(Mel标度)非线性划分的<br>
+  - 再用 Qwen2-Audio 使得每帧表示大致对应于原 40ms audio signal 
+> **采样率 (sampling rate)** : 单位时间内从连续音频信号中采集样本的次数，通常单位为 赫兹 HZ 或 kHZ(千赫) eg : 16kHZ 采样率指每秒采集16,000个样本点
+>  
+> **原始音频波形 (raw waveform)** : 采样后得到的一维时间序列，是一长串浮点数/整数，每个值表示声波再某一时间点的振幅大小
+> 
+> **Mel 频谱图 (Mel-Spectrogram)** : 将音频波形转化为"时间 * 频率形式的二维图像"，其中频率轴式按人耳听觉感知方式(Mel标度)非线性划分的
+> 
 > **window** : 窗口大小(window size)为每次分析的时间长度, 步长(hop size)为每次窗口移动的时间长度 
 
 **vision encoder** : Qwen2.5-VL
@@ -54,5 +58,29 @@ Talker (mouth): 流式接受来自 Thinker 的输出并且输出 speech token
 
 > 动态帧率 (dynamic frame rate) : 在对视频进行帧抽样时，所用帧率不是固定，而是根据默写外部因素动态调整每秒取多少帧
 
+**Video & TMRoPE** :  
+time-interleaving algorithm for audion and video <br>
+TMoPE :  将原始旋转编码结构为三部分 : temporal, height, width
+  - for text : identical position IDS, 等价于 1D-RoPE
+  - for audio : identical position IDs, 绝对时间位置编码，一个时间 ID 对应 40ms
+  - for image : identical temporal IDs, 根据图像块位置分配 height 和 width
+  - for video with audio :
+    - identical position IDs 每帧 40ms内，每帧增加1，
+
+> **RoPE (Rotary Position Embedding)** : 一种相对位置编码方式，旋转编码，相对位置建模，无需引入额外参数
+> 
+> **M-RoPE(Multimodal RoPE)** : 一种用于多模态输入位置编码的方法，通过调整RoPE,使不同模态可以共享或对齐空间/时间位置的信息，更好地实现模态融合与交互
+>   
+
+
+
+
+
+
+
+
 ## todo list
 - Mini-Omni
+- Qwen2-Audio
+- Qwen2.5-VL (M-RoPE)
+- M-RoPE 
