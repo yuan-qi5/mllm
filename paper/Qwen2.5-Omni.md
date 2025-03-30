@@ -130,7 +130,11 @@ Talker consists three-stages training process
 ## Evaluation
 
 ## todo list
-- Mini-Omni
-- Qwen2-Audio
-- Qwen2.5-VL (M-RoPE)
-- M-RoPE 
+- [Mini-Omni][1]
+- [Qwen2-Audio][2]
+- [Qwen2.5-VL (M-RoPE)][3]
+- [Qwen2.3][4]
+
+[3]:https://github.com/yuan-qi5/mllm/blob/main/paper/Qwen2.5-VL.md 
+[4]:https://github.com/yuan-qi5/mllm/blob/main/paper/Qwen2.5.md
+  
