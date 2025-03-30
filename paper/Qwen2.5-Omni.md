@@ -1,5 +1,5 @@
 # Note : Qwen2.5-Omni Technical Report
-> 由于刚接触 mllm ,会记录更多的基础知识,以引用方式区分论文部分与基础知识
+> 由于本人较菜(qwq)以及刚接触 mllm ,会记录更多的基础知识,以引用方式区分论文部分与基础知识
 
 ## Introduction
 
@@ -16,12 +16,12 @@
 
 
 ### What innovations are Qwen2.5-Omin ?
-- **T**ime-aligned **M**ultimodal **RoPE** **TMRoPE** position embedding
+- **T**ime-aligned **M**ultimodal **RoPE** **(TMRoPE)** position embedding
 - **Thinker-Talker** architecture
 - **block-wise processing** in audio and visual encoder
 - **sliding-window** DiT decoding audio
 
-## main
+## Architecture
 
 ### Thinker-Talker architecture
 Thinker (brain) : 处理和理解多模态输入，生成高级表示和对应的文本   
@@ -32,6 +32,8 @@ Talker (mouth): 流式接受来自 Thinker 的输出并且输出 speech token
 
 > **dual-track model**(双轨模型) : 模型在生成内容时**并行建模两个序列**(或模态/轨道)，这两个序列可能存在依赖或交互，从而提升整体建模能力
 >
+
+![overview of Qwen2.5-Omni](./Qwen2.5-Omni_architecture.png)
 
 ### Perceivation
 **tokenize text** : Qwen's tokenizer  
