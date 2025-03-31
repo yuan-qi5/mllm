@@ -103,7 +103,7 @@ for video :
 
 ## Pre-Training
 
-预训练数据集构建 --> 训练流程与配置
+[预训练数据集构建](https://github.com/yuan-qi5/mllm/edit/main/paper/Qwen2.5-VL.md#pre-training-data) --> [训练流程与配置](https://github.com/yuan-qi5/mllm/edit/main/paper/Qwen2.5-VL.md#training-recipe)
 
 ### Pre-Training Data
 
@@ -147,7 +147,7 @@ score criteria :
 - 结合了公开数据集与自有私有数据集
 - 采用将数据合成为多种格式（如: XML,JSON, 自定义格式等），copy-paste augmentation ，使通过现有生成模型来生成数据来丰富数据集
 
-> copy-paste : 通过 “复制 + 粘贴” 的方式，把一个图像中的目标铁道另一个图像中，制造更多多样化场景
+> copy-paste : 通过 “复制 + 粘贴” 的方式，把一个图像中的目标粘贴到另一个图像中，制造更多多样化场景
 > open-vocabulary detection (开集目标检测) ：传统的目标检测识别固定类别，开集目标检测要求模型能够推理未见过的类别
 
 #### Document Omin-Parsing Data
@@ -157,9 +157,9 @@ Qwen2.5-VL 被设计为一个通用模型，具备全面的能力去解析、理
 对于数据，将任何文档的完整信息及布局框信息和插图描述，以标准化和统一的方式整合进 HTML 标签结构中。
 
 > layout analysis（布局分析）：理解页面结构、段落、标题
->
+> 
 > text extraction（文本提取）：从文档中提取纯文本
->
+> 
 > chart interpretation（图表解析）：分析图表数据并提取相关信息
 >
 > illustration processing（插图处理）：识别和理解图像、插图等
@@ -191,7 +191,7 @@ for decision-making : <br>
 具体来说 : <br>
 截图中高亮标出一个真实操作 --> 向标注员提供全局查询(global query)及操作前后截图 --> 标注员写出操作背后的推理内容 --> 过滤低质量推理内容
 
-> agent capability : 指模型能主动理解任务并一步步操作执行，即：观察界面 --> 分析任务 --> 决策执行
+> agent capability : 指模型能主动理解任务并执行一步步操作，即：观察界面 --> 分析任务 --> 决策执行
 > multi-step trajectory（多步操作轨迹） : 指执行一个任务所需的一系列步骤
 
 ### Training Recipe
