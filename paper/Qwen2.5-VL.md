@@ -39,11 +39,14 @@ Qwen2.5-VL 有三个版本 ： 72B, 7B, 3B
 >
 > $$ RMS(x) = \sqrt{\sum_{i=1}^n x_{i}^{2}} $$
 >
-> SwiGLU 激活函数 ： 由 Gated Linear Units(GLU) 和 Swish 激活函数结合起来，常用于 Transformer 的前馈层 (Feedforward Layer) 
+> SwiGLU 激活函数 ： 由 Gated Linear Units(GLU) 和 Swish 激活函数结合起来，常用于 Transformer 的前馈层 (Feedforward Layer)。相比原始 GLU 中使用的 sigmod，它更 “平滑” 、“非线性强”。 
 >
 > $$ GLU(x) = (xW_1) * \sigma(xW_2) $$
 >
-> $$ SwishGLU(x) = (xW_1) * Swish(xW_2)$$
+> $$ Swish(x) = x * \sigma(x) $$
+>
+> $$ SwishGLU(x) = (xW_1) * Swish(xW_2) $$
+> 
 
 ![Qwen2.5-VL framework](./Qwen2.5-VL_framework.png) 
 
@@ -51,9 +54,15 @@ Qwen2.5-VL 有三个版本 ： 72B, 7B, 3B
 
 ### Model Architecture
 
+Qwen2.5-VL 整体上由三部分组成 ：
+- Large Language Model : 使用 Qwen2.5 LLM 中预训练权重进行初始化，将 1D-RoPE 修改为与绝对时间对其的 MRoPE 
+
+- Vision Encoder ：redesigned ViT ，在训练和推理时，都会把输入图像的高和宽调整为 28 的倍数，采用 141 * 14 patch
+
+- MLP-based Vision-Languange Merger : 为提高长序列图像处理效率，
 
 
-
+![Qwen2.5-VL_configuration](./Qwen2.5-VL_configuration)
 
 ## Pre-Training
 
