@@ -5,6 +5,7 @@ Qwen2.5-VL 有三个版本 ： 72B, 7B, 3B
 
 ### What are current LVLMS's main drawbacks ?
 - 像 “夹心饼干的中间层” ---- 即夹在视觉和语言大模型之间，什么都能做，但都做得不够好
+  
 - 细粒度的视觉任务构成了类比中的基础层
 
 ### What are Qwen2.5-VL's main advantages ?
@@ -112,7 +113,7 @@ for video :
 
 - 在训练过程调整不同阶段数据类型组成与比例，以优化学习成果
 
-####Interleaved Image-Text Data :
+#### Interleaved Image-Text Data :
 
 对多模态学习至关重要
 
@@ -164,7 +165,36 @@ Qwen2.5-VL 被设计为一个通用模型，具备全面的能力去解析、理
 > illustration processing（插图处理）：识别和理解图像、插图等
 > 
 
-![QwenVL_HTML_Format]()
+![QwenVL_HTML_Format](./QwenVL_HTML_Format.png)
+
+#### Video Data
+
+- 增强对不同帧率视频理解的鲁棒性 ：训练时动态采样
+  
+- 增强对长视频理解 ：对超过半个小时视频，构建长视频字幕数据，这些字幕由多个帧的内容综合生成（长视频单个帧信息太稀疏，难以理解整体）
+
+- 对视频时间定位 ：采用两种格式来表示时间戳，基于秒的格式（如：132.5秒），小时-分钟-秒-帧格式（hmsf格式，如 `00:02:12:15`）确保模型能准确理解并生成各种时间格式
+
+#### Agent Data
+
+通过增强模型的 perception 和 decision-making 来构建 Qwen2.5-VL的智能体能力
+
+for perception : <br>
+收集来自移动端、网页端和桌面端的页面截图，并用一个合成数据引擎来自动生成 ：界面截图的描述(captions)和 UI 元素的定位标注(grounding annotations) <br>
+Caption 任务使模型理解界面整体内容，Grounding 任务使模型将界面追踪元素的外观与其功能对齐
+
+for decision-making : <br>
+先将不同平台（如移动端、网页端和桌面端）上操作统一为一个函数调用形式，并定义一个共享的动作空间，
+再将一批带有标注的多步操作轨迹重新整理为统一的函数调用格式，
+然后通过人工与模型标注员为每一个操作步骤生成对应的推理过程， <br>
+
+具体来说 : <br>
+截图中高亮标出一个真实操作 --> 向标注员提供全局查询(global query)及操作前后截图 --> 标注员写出操作背后的推理内容 --> 过滤低质量推理内容
+
+> agent capability : 指模型能主动理解任务并一步步操作执行，即：观察界面 --> 分析任务 --> 决策执行
+> multi-step trajectory（多步操作轨迹） : 指执行一个任务所需的一系列步骤
+
+### Training Recipe
 
 ## Post-Training
 
