@@ -111,7 +111,7 @@ qwen-tts-tokenizer : 一个语音编解码器，解码器流式自回归生成�
 - streaming codec（解码器） generation  ：使用滑动窗口块状注意力机制，限制当前 token 只能访问有限上下文（访问四个区块，两个回溯，一个前瞻）。具体来说，使用由 Flow-Matching 方法构建的 DiT 模型，使用 Flow-Matching 将输入转换为 Mel 频谱图，再用修改后的 BigVGAN 重建波形。  
 
 
-![sliding_DiT](./Qwen2.5-Omin_sliding_Dit.png)
+![sliding_DiT](./%20Qwen2.5-Omin_sliding_Dit.png)
 
  
 > chunked-prefill : 一种语言模型推理加速策略，把 prefill 阶段的长上下文，分成多个小块（chunk）逐步处理，而不是一次性全送入模型
