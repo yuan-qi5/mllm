@@ -103,7 +103,10 @@ for video :
 
 ## Pre-Training
 
-[预训练数据集构建](https://github.com/yuan-qi5/mllm/edit/main/paper/Qwen2.5-VL.md#pre-training-data) --> [训练流程与配置](https://github.com/yuan-qi5/mllm/edit/main/paper/Qwen2.5-VL.md#training-recipe)
+[预训练数据集构建][1] --> [训练流程与配置][2] 
+
+[1]:https://github.com/yuan-qi5/mllm/main/paper/Qwen2.5-VL.md#pre-training-data
+[2]:https://github.com/yuan-qi5/mllm/main/paper/Qwen2.5-VL.md#training-recipe
 
 ### Pre-Training Data
 
