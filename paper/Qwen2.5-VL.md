@@ -52,24 +52,119 @@ Qwen2.5-VL 有三个版本 ： 72B, 7B, 3B
 
 ## Model
 
-### Model Architecture
+### Overall Architecture
 
 Qwen2.5-VL 整体上由三部分组成 ：
 - Large Language Model : 使用 Qwen2.5 LLM 中预训练权重进行初始化，将 1D-RoPE 修改为与绝对时间对其的 MRoPE 
 
-- Vision Encoder ：redesigned ViT ，在训练和推理时，都会把输入图像的高和宽调整为 28 的倍数，采用 141 * 14 patch
+- Vision Encoder ：redesigned ViT ，在训练和推理时，都会把输入图像的高和宽调整为 28 的倍数，采用 14 * 14 patch
 
-- MLP-based Vision-Languange Merger : 为提高长序列图像处理效率，
+- MLP-based Vision-Languange Merger : 将空间相邻的 4 个 patch 特征拼接在一起，通过一个两层的 MLP 将其投影与文本嵌入相同的维度。不仅降低了计算成本，而且提供一种灵活的动态压缩不同长度的图像特征序列的方式（个人理解：可按需选择是否压缩）
 
 
-![Qwen2.5-VL_configuration](./Qwen2.5-VL_configuration)
+![Qwen2.5-VL_configuration](./Qwen2.5-VL_configuration.png)
+
+### Fast and Efficient Vision Encoder
+
+
+
+### Native Dynamic Resolution and Frame Rate
+
+for Image : 
+- 动态处理不同尺寸图像 
+
+- 直接使用图像的实际尺寸来表示 bounding box、关键点坐标和其他空间特征，使模型自动学习 “尺度信息” （不同于传统的通过归一化坐标来处理空间位置）
+
+for video :
+- 采用动态帧训练
+
+- 引入绝对时间编码，使模型通过时间维度上 ID 之间的间隔来理解时间节奏（不同于使用文本事件戳或额外的注意力头来实现事件定位）
+
+> native : 指模型本身结构设计就天然支持，不依赖外部补丁或复杂的预处理模块
+>
+> textual timestamps（文本时间戳）：以文字形式提供给模型的时间信息，通常使人类刻度的文字描述，而不是像 1.5 秒这种数字型时间戳
+>
+> 
+
+### Multimodal Rotary Position Embedding Aligned to Absolute Time
+
+**MRoPE in Qwen2-VL** :  将位置编码结构为三部分 : temporal, height, width
+  - for text : identical position IDS, 等价于 1D-RoPE 
+  - for image : identical temporal IDs, 根据图像块位置分配 height 和 width
+  - for video  :
+    - video : 看作图像序列，每一帧对应一个 Temporal ,向后递增 1，height、width 与 image 相同
+    - 由于视频中帧率不固定，根据实际时间动态调整使得每一个 Temporal ID 对应 40ms
+
+**improve in Qwen2.5-VL** :
+- 在 Qwen2-VL 中，MRoPE 中时间位置 ID 仅与输入帧数量相关联，没有考虑内容变化速度或视频中事件发生的绝对时间点
+
+- 将 MRoPE 的时间部分与绝对时间对齐，利用时间 ID 之间的间隔信息，让模型在不同帧采样的视频之间一致的时间对齐方式
 
 ## Pre-Training
 
+预训练数据集构建 --> 训练流程与配置
 
+### Pre-Training Data
 
+- 将预训练数据由 1.2 万亿 token 扩展到大约 4 万亿 token。
 
+- 预训练数据集包含各种不同类型的数据
 
+- 在训练过程调整不同阶段数据类型组成与比例，以优化学习成果
+
+####Interleaved Image-Text Data :
+
+对多模态学习至关重要
+
+benefits : 
+ - 通过同步视觉或文本线索实现上下文学习
+ - 在图像缺失时保持强大的纯文本功能
+ - 包含广泛的一般信息
+
+challenges :
+- 现存交错数据缺乏有意义的 text-image 联系，
+- 噪声高
+
+设计了一套**数据评分**与**清洗流程**，确保只使用高质量、相关性强的交错数据
+
+cleaning pipeline :
+- 标准的数据清洗
+- 使用内部评估模型的四阶段评分系统
+
+score criteria :
+- 纯文本质量 (text-only quality)
+- 图片相关性 (image-text relevance)
+- 图文互补性 (image-text complementarity)
+- 信息密度平衡 (information density blanace)
+  
+#### Grounding Data with Absolute Position Coordinates
+
+采用原始分辨率训练，认为相对坐标无法有效表示图像中物体的真实大小和位置，而原始分辨率能实现更好地感知
+
+构建了一个全面的数据集 ：
+- 包含图像中的目标框(bounding box)，点位标注(points)，指代表达(referring expressions)
+- 结合了公开数据集与自有私有数据集
+- 采用将数据合成为多种格式（如: XML,JSON, 自定义格式等），copy-paste augmentation ，使通过现有生成模型来生成数据来丰富数据集
+
+> copy-paste : 通过 “复制 + 粘贴” 的方式，把一个图像中的目标铁道另一个图像中，制造更多多样化场景
+> open-vocabulary detection (开集目标检测) ：传统的目标检测识别固定类别，开集目标检测要求模型能够推理未见过的类别
+
+#### Document Omin-Parsing Data
+
+Qwen2.5-VL 被设计为一个通用模型，具备全面的能力去解析、理解和转换文档。
+
+对于数据，将任何文档的完整信息及布局框信息和插图描述，以标准化和统一的方式整合进 HTML 标签结构中。
+
+> layout analysis（布局分析）：理解页面结构、段落、标题
+>
+> text extraction（文本提取）：从文档中提取纯文本
+>
+> chart interpretation（图表解析）：分析图表数据并提取相关信息
+>
+> illustration processing（插图处理）：识别和理解图像、插图等
+> 
+
+![QwenVL_HTML_Format]()
 
 ## Post-Training
 
