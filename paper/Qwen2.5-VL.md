@@ -28,15 +28,28 @@ Qwen2.5-VL 有三个版本 ： 72B, 7B, 3B
  
 
 > FPS (Frame Per Second) : 每秒中采样多少帧图像
-> dynamiac FPS Sampling ； 根绝视频内容变化动态地调整帧采样频率
 >
-> 
+> dynamiac FPS Sampling : 根绝视频内容变化动态地调整帧采样频率
+>
+> RMSNorm (Root Mean Square Normalization) : 层归一化的一种变体
+>
+> $$ LayerNorm(x) = \frac{x - \mu }{\sigma} * \gamma + \beta $$
+>
+> $$ RMSNorm(x) = \frac{x}{RMS(x)} * \gamma $$
+>
+> $$ RMS(x) = \sqrt{\sum_{i=1}^n x_{i}^{2}} $$
+>
+> SwiGLU 激活函数 ： 由 Gated Linear Units(GLU) 和 Swish 激活函数结合起来，常用于 Transformer 的前馈层 (Feedforward Layer) 
+>
+> $$ GLU(x) = (xW_1) * \sigma(xW_2) $$
+>
+> $$ SwishGLU(x) = (xW_1) * Swish(xW_2)$$
 
 ![Qwen2.5-VL framework](./Qwen2.5-VL_framework.png) 
 
 ## Model
 
-
+### Model Architecture
 
 
 
