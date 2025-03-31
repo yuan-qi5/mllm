@@ -22,15 +22,18 @@ Qwen2.5-VL 有三个版本 ： 72B, 7B, 3B
 
 ### What innovations are Qwen2.5-Omin ? 
 
-- 视觉编码器 ViT 采用 **window attention** 以优化推理速度，此外将 ViT 中 FFN 整合 SwiGLU 激活函数，采用 RMSNorm 正则化
+- 视觉编码器 ViT 采用 **window attention** 以优化推理速度，此外将 ViT 中 FFN 整合 **SwiGLU 激活函数**，采用 **RMSNorm 正则化**
 - **动态 FPS 采样**，将动态分辨率扩展到时间维度（即动态帧），支持对不同采样率的全面视频理解
-- 将时间域上 MRoPE 与绝对时间对齐，促进复杂地时间序列学习 
-
-![Qwen2.5-VL framework]()  
+- 将时间域上 **MRoPE 与绝对时间对齐**，促进复杂地时间序列学习 
+ 
 
 > FPS (Frame Per Second) : 每秒中采样多少帧图像
 > dynamiac FPS Sampling ； 根绝视频内容变化动态地调整帧采样频率
+>
 > 
+
+![Qwen2.5-VL framework](./Qwen2.5-VL_framework.png) 
+
 ## Model
 
 
