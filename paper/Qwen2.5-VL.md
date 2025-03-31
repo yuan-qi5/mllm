@@ -10,8 +10,11 @@ Qwen2.5-VL 有三个版本 ： 72B, 7B, 3B
 
 ### What are Qwen2.5-VL's main advantages ?
 - 全能文档解析能力 ：可处理多场景、多语言、多形式（如手写、表格、乐谱等）文档
+
 - 跨格式精准物体定位 ：在 detecting objects, pointing to objects, counting objects 准确性得到提升，且支持绝对坐标与 JSON 格式输出 
+
 - 超长视频理解与细粒度视频定位（在几秒钟内提取事件片段）
+
 - 面向电脑和移动设备的增强性智能体功能
 
 > detect objects : 识别图中有哪些目标
@@ -24,7 +27,9 @@ Qwen2.5-VL 有三个版本 ： 72B, 7B, 3B
 ### What innovations are Qwen2.5-Omin ? 
 
 - 视觉编码器 ViT 采用 **window attention** 以优化推理速度，此外将 ViT 中 FFN 整合 **SwiGLU 激活函数**，采用 **RMSNorm 正则化**
+
 - **动态 FPS 采样**，将动态分辨率扩展到时间维度（即动态帧），支持对不同采样率的全面视频理解
+
 - 将时间域上 **MRoPE 与绝对时间对齐**，促进复杂地时间序列学习 
  
 
@@ -122,17 +127,21 @@ for video :
 
 benefits : 
  - 通过同步视觉或文本线索实现上下文学习
+ 
  - 在图像缺失时保持强大的纯文本功能
+ 
  - 包含广泛的一般信息
 
 challenges :
 - 现存交错数据缺乏有意义的 text-image 联系，
+
 - 噪声高
 
 设计了一套**数据评分**与**清洗流程**，确保只使用高质量、相关性强的交错数据
 
 cleaning pipeline :
 - 标准的数据清洗
+
 - 使用内部评估模型的四阶段评分系统
 
 score criteria :
@@ -147,7 +156,9 @@ score criteria :
 
 构建了一个全面的数据集 ：
 - 包含图像中的目标框(bounding box)，点位标注(points)，指代表达(referring expressions)
+
 - 结合了公开数据集与自有私有数据集
+
 - 采用将数据合成为多种格式（如: XML,JSON, 自定义格式等），copy-paste augmentation ，使通过现有生成模型来生成数据来丰富数据集
 
 > copy-paste : 通过 “复制 + 粘贴” 的方式，把一个图像中的目标粘贴到另一个图像中，制造更多多样化场景
