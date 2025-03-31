@@ -49,7 +49,7 @@ Qwen2.5-VL 有三个版本 ： 72B, 7B, 3B
 > $$ SwishGLU(x) = (xW_1) * Swish(xW_2) $$
 > 
 
-![Qwen2.5-VL framework](./Qwen2.5-VL_framework.png) 
+![Qwen2.5-VL framework](./pictures/Qwen2.5-VL_framework.png) 
 
 ## Model
 
@@ -63,7 +63,7 @@ Qwen2.5-VL 整体上由三部分组成 ：
 - MLP-based Vision-Languange Merger : 将空间相邻的 4 个 patch 特征拼接在一起，通过一个两层的 MLP 将其投影与文本嵌入相同的维度。不仅降低了计算成本，而且提供一种灵活的动态压缩不同长度的图像特征序列的方式（个人理解：可按需选择是否压缩）
 
 
-![Qwen2.5-VL_configuration](./Qwen2.5-VL_configuration.png)
+![Qwen2.5-VL_configuration](./pictures/Qwen2.5-VL_configuration.png)
 
 ### Fast and Efficient Vision Encoder
 
@@ -168,7 +168,7 @@ Qwen2.5-VL 被设计为一个通用模型，具备全面的能力去解析、理
 > illustration processing（插图处理）：识别和理解图像、插图等
 > 
 
-![QwenVL_HTML_Format](./QwenVL_HTML_Format.png)
+![QwenVL_HTML_Format](./pictures/QwenVL_HTML_Format.png)
 
 #### Video Data
 
@@ -198,6 +198,9 @@ for decision-making : <br>
 > multi-step trajectory（多步操作轨迹） : 指执行一个任务所需的一系列步骤
 
 ### Training Recipe
+
+
+![Qwen2.5-VL_train_recipe](./pictures/Qwen2.5-VL_train_recipe.png)
 
 ## Post-Training
 
