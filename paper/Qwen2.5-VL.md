@@ -194,15 +194,18 @@ Qwen2.5-VL 被设计为一个通用模型，具备全面的能力去解析、理
 通过增强模型的 perception 和 decision-making 来构建 Qwen2.5-VL的智能体能力
 
 for perception : <br>
+
 收集来自移动端、网页端和桌面端的页面截图，并用一个合成数据引擎来自动生成 ：界面截图的描述(captions)和 UI 元素的定位标注(grounding annotations) <br>
 Caption 任务使模型理解界面整体内容，Grounding 任务使模型将界面追踪元素的外观与其功能对齐
 
 for decision-making : <br>
+
 先将不同平台（如移动端、网页端和桌面端）上操作统一为一个函数调用形式，并定义一个共享的动作空间，
 再将一批带有标注的多步操作轨迹重新整理为统一的函数调用格式，
 然后通过人工与模型标注员为每一个操作步骤生成对应的推理过程， <br>
 
 具体来说 : <br>
+
 截图中高亮标出一个真实操作 --> 向标注员提供全局查询(global query)及操作前后截图 --> 标注员写出操作背后的推理内容 --> 过滤低质量推理内容
 
 > agent capability : 指模型能主动理解任务并执行一步步操作，即：观察界面 --> 分析任务 --> 决策执行
@@ -210,17 +213,47 @@ for decision-making : <br>
 
 ### Training Recipe
 
+初始化：
+
+- LLM 使用 pre-trained Qwen2.5-LLM 初始化
+
+- ViT 使用 DataComp 和内部数据集进行初始化
+
+三阶段学习 ：
+
+- stage1 : 仅 ViT 训练，学习与 LLM 对齐，为多模态理解学习坚实的基础
+
+- stage2 : 所有参数解冻，再视觉与语言模式间建立更深级别的联系
+ 
+- stage3 : 增强对长样本的推理能力
 
 ![Qwen2.5-VL_train_recipe](./pictures/Qwen2.5-VL_train_recipe.png)
 
+为解决不同图像尺寸和文本长度差异带来的**计算负载不平衡**，对 LLM 采用**动态打包**策略
+- stage1 & stage2 : 8192 token
+- stage3 : 32768 token
+
+> 动态打包(dynamic packing) : 将多个 “短的样本” 打包在一起填满一个最大 token 长度限制，充分利用模型计算资源
+
 ## Post-Training
 
+使用 SFT(Supervised Fine-Tuning) 和 DPO(Direct Preference Optimization)
 
+### Training Recipe
 
+- 两阶段都冻结 ViT
 
+- SFT 阶段在多种类型多模态数据上训练
 
+- DPO 阶段在 image-text & pure text 数据上训练 
 
+### SFT data construction
 
+- 数据集组成 ：由 200 万个 entries，一半纯文本数据，一半多模态数据（图像-文本、视频-文本）
+
+- 数据集清理 ：首先使用 Qwen2-VL-Instag 进行分类，分为 8 大类，30个子类；然后针对每一类进行数据清理，主要通过基于启发式规则的清理的基于评分模型的清理 
+
+- 拒绝采样 ：用 “中间模型” 对数据进行初步 “测试”，只保留那些模型输出与标准答案匹配的样本，丢弃其他的，形成一个 “干净可信” 的子集
 
 ## Experiments
 
