@@ -72,7 +72,11 @@ Qwen2.5-VL 整体上由三部分组成 ：
 
 ### Fast and Efficient Vision Encoder
 
+- 仅四层使用全注意力，其余使用 windows attention，maximum window 尺寸为 112 * 112，小于 112 * 112 保留原始分辨率； 
 
+- 对视频数据，将两个连续帧组合在一起，减少 video 的 tokens 数量
+
+- ViT 架构与 LLM 保持一致，采用 RMSNorm 和 SwiGLU
 
 ### Native Dynamic Resolution and Frame Rate
 
@@ -256,4 +260,10 @@ for decision-making : <br>
 - 拒绝采样 ：用 “中间模型” 对数据进行初步 “测试”，只保留那些模型输出与标准答案匹配的样本，丢弃其他的，形成一个 “干净可信” 的子集
 
 ## Experiments
+
+Qwen2.5-VL-72B 与 GPT-4o 和 Claude 3.5 Sonnet 相当，尤其擅长文档与图标理解。
+
+![Qwen2.5-VL_performance](./pictures/Qwen2.5-VL_performance.png)
+
+
 
