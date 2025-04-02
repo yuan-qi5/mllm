@@ -73,7 +73,7 @@ CR = { (m × 384, n × 384) | m ∈ ℕ, n ∈ ℕ, 1 ≤ m, n, mn ≤ 9 }
 > load imbalance : 是 MoE 中的一个经典问题，在 MoE 中，每个样本由一个 “门控网络” 决定走哪个 expert, 有时会出现部分 expert 经常被使用，部分 expert 几乎闲置，这会导致训练不充分、容易过拟合以及计算资源浪费等问题
 
 
-![DeepSeek_architectural_configuration](./DeepSeek_architectural_configuration.png)
+![DeepSeek-VL2_architectural_configuration](./pictures/DeepSeek_architectural_configuration.png)
 
 ## Data Construction
 
@@ -113,7 +113,7 @@ CR = { (m × 384, n × 384) | m ∈ ℕ, n ∈ ℕ, 1 ≤ m, n, mn ≤ 9 }
 
 DeepSeek-VL2 训练与评估均使用 HAI-LLM，训练过程分别用了 7/10/14 天使用 16/33/42 个节点，每个节点有 8 张 A100。
 
-![DeepSeek-VL2_hyperparameter](DeepSeek-VL2_hyperparameter.png)
+![DeepSeek-VL2_hyperparameter](./pictures/DeepSeek-VL2_hyperparameter.png)
 
 ## Evaluation 
 
@@ -123,7 +123,7 @@ DeepSeek-VL2 训练与评估均使用 HAI-LLM，训练过程分别用了 7/10/14
 
 visual grounding ：训练集中大部分图像来自自然场景，但可以泛化到其他场景（如动漫等），并具有识别名人和抽象概念的能力
 
-![DeepSeek_performance1](DeepSeek_performance1.png)
+![DeepSeek-VL2_performance1](./pictures/DeepSeek_performance1.png)
 
 
 
