@@ -6,9 +6,12 @@ Qwen2.5 有 7 个不同版本 ：0.5B，1.5B，3B，7B，14B，32B，72B，不�
 
 ### What improvations are Qwen2.5 ?
 
-- pre-training stages : 数据集规模从 7 万亿 tokens 到 18 万亿 tokens 
+- [pre-training stages][1] : 数据集规模从 7 万亿 tokens 到 18 万亿 tokens 
 
-- post-training stages : 超过 1 百万样本进行监督微调和多阶段强化学习（包括离线学习 DPO 和在线学习 GRPO）
+- [post-training stages][2] : 超过 1 百万样本进行监督微调和多阶段强化学习（包括离线学习 DPO 和在线学习 GRPO）
+
+[1]:https://github.com/yuan-qi5/mllm/blob/main/paper/Qwen2.5.md#pre-training
+[2]:https://github.com/yuan-qi5/mllm/blob/main/paper/Qwen2.5.md#post-training
 
 ### What key features of Qwen2.5 ?
 
