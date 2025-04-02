@@ -1,4 +1,4 @@
-# Note DeepSeek-VL2：Mixture-of-Experts Vision-Language Models for Advanced Multimodal Understanding 
+# Note : DeepSeek-VL2：Mixture-of-Experts Vision-Language Models for Advanced Multimodal Understanding 
 
 ## Introduction
 
