@@ -61,7 +61,7 @@ CR = { (m × 384, n × 384) | m ∈ ℕ, n ∈ ℕ, 1 ≤ m, n, mn ≤ 9 }
 
 - 使用两层 MLP 将其投影到语言模型的嵌入空间
 
-> pixel shuffle (像素重排操作) ：
+> pixel shuffle (像素重排操作) ：将特征图的通道维度重排为空间维度（或反过来）的操作。
 >
 
 ### DeepSeekMoE LLM
@@ -77,15 +77,53 @@ CR = { (m × 384, n × 384) | m ∈ ℕ, n ∈ ℕ, 1 ≤ m, n, mn ≤ 9 }
 
 ## Data Construction
 
+训练过程分为三个阶段 ：
+
+- VL alignment
+
+- VL pretraining
+
+- supervised fine-tuning 
+
+### Vision-Language Alignment Data
+
+
+### Vision-Language Pretraining Data
+
+### Supervised Fine-tuning Data
+
+
 
 
 ## Training Methodology
 
+### Vision-Language Alignment
 
+冻结语言模型，训练视觉编码器和视觉语言适配器，为对齐视觉特征与语言特征
+
+### Vision-Language Pre-training
+
+解冻所有参数，使用大约 800B image-text tokens 进行训练，增强多模态理解能力同时尽量保持语言能力
+
+### Supervised Fine-Tuning
+
+优化所有参数通过 SFT 提升模型的指令跟随(instruction-following)能力和对话(conversational)能力
+
+### Hyperparameters and Infrastructures
+
+DeepSeek-VL2 训练与评估均使用 HAI-LLM，训练过程分别用了 7/10/14 天使用 16/33/42 个节点，每个节点有 8 张 A100。
+
+![DeepSeek-VL2_hyperparameter]()
 
 ## Evaluation 
 
+> 不包含所有内容，详细信息请阅读原文
 
+在开源模型上表现不错，但与闭源模型仍然存在一定的差距。
+
+visual grounding ：训练集中大部分图像来自自然场景，但可以泛化到其他场景（如动漫等），并具有识别名人和抽象概念的能力
+
+![DeepSeek_performance1]()
 
 
 
