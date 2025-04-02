@@ -4,6 +4,7 @@ my learning and understanding of mllm <br>
   - [Qwen2.5-Omin][3]
   - [Qwen2.5-VL][4]
   - [Qwen2.5][5]
+  - [deepseek-VL2][6]
   
 - [code][2]
 
@@ -12,4 +13,4 @@ my learning and understanding of mllm <br>
 [3]:https://github.com/yuan-qi5/mllm/blob/main/paper/Qwen2.5-Omni.md
 [4]:https://github.com/yuan-qi5/mllm/blob/main/paper/Qwen2.5-VL.md
 [5]:https://github.com/yuan-qi5/mllm/blob/main/paper/Qwen2.5.md
-
+[6]:https://github.com/yuan-qi5/mllm/blob/main/paper/deepseek-VL2.md
