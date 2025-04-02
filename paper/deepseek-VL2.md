@@ -123,7 +123,7 @@ DeepSeek-VL2 训练与评估均使用 HAI-LLM，训练过程分别用了 7/10/14
 
 visual grounding ：训练集中大部分图像来自自然场景，但可以泛化到其他场景（如动漫等），并具有识别名人和抽象概念的能力
 
-![DeepSeek-VL2_performance1](./pictures/DeepSeek_performance1.png)
+![DeepSeek-VL2_performance1](./pictures/DeepSeek-VL2_performance1.png)
 
 
 
