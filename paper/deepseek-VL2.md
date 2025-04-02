@@ -16,9 +16,9 @@
     
 - a refined vision-language construction pipeline
 
-  - 改进后数据集新增视觉接地和图形用户界面感知功能
+  - 改进后数据集新增视觉 grounding 和图形用户界面感知功能
     
-![DeepSeek-VL2_overview]()
+![DeepSeek-VL2_overview](./pictures/DeepSeek-VL2_overview.png)
 
 
 > llava-style architecture :
@@ -51,7 +51,7 @@ CR = { (m × 384, n × 384) | m ∈ ℕ, n ∈ ℕ, 1 ≤ m, n, mn ≤ 9 }
 
 - 如果一次输入多张图，不再使用动态 tile 策略，
 
-![DeepSeek-VL2_dynamic_tiling_strategy_illustration]()  
+![DeepSeek-VL2_dynamic_tiling_strategy_illustration](./pictures/DeepSeek-VL2_dynamic_tiling_strategy_illustration.png)  
 
 ### Vision-Language Adaptor
 
@@ -73,7 +73,7 @@ CR = { (m × 384, n × 384) | m ∈ ℕ, n ∈ ℕ, 1 ≤ m, n, mn ≤ 9 }
 > load imbalance : 是 MoE 中的一个经典问题，在 MoE 中，每个样本由一个 “门控网络” 决定走哪个 expert, 有时会出现部分 expert 经常被使用，部分 expert 几乎闲置，这会导致训练不充分、容易过拟合以及计算资源浪费等问题
 
 
-![DeepSeek_architectural_configuration]()
+![DeepSeek_architectural_configuration](./DeepSeek_architectural_configuration.png)
 
 ## Data Construction
 
@@ -113,7 +113,7 @@ CR = { (m × 384, n × 384) | m ∈ ℕ, n ∈ ℕ, 1 ≤ m, n, mn ≤ 9 }
 
 DeepSeek-VL2 训练与评估均使用 HAI-LLM，训练过程分别用了 7/10/14 天使用 16/33/42 个节点，每个节点有 8 张 A100。
 
-![DeepSeek-VL2_hyperparameter]()
+![DeepSeek-VL2_hyperparameter](DeepSeek-VL2_hyperparameter.png)
 
 ## Evaluation 
 
@@ -123,7 +123,7 @@ DeepSeek-VL2 训练与评估均使用 HAI-LLM，训练过程分别用了 7/10/14
 
 visual grounding ：训练集中大部分图像来自自然场景，但可以泛化到其他场景（如动漫等），并具有识别名人和抽象概念的能力
 
-![DeepSeek_performance1]()
+![DeepSeek_performance1](DeepSeek_performance1.png)
 
 
 
