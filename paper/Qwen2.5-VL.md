@@ -22,7 +22,7 @@ Qwen2.5-VL 有三个版本 ： 72B, 7B, 3B
 > count objects : 数有多少个同类物体
 > 上述三个任务构成了 "细粒度空间理解" 的核心
 > 
-> second-level event localization（二级事件定位）：通常指在"**秒级别**"的时间精度上，对视频中特定事件进行定位（localization 指第几秒开始第几秒结束）的任务
+> second-level event localization（秒级事件定位）：通常指在"**秒级别**"的时间精度上，对视频中特定事件进行定位（localization 指第几秒开始第几秒结束）的任务
 
 ### What innovations are Qwen2.5-Omin ? 
 
@@ -61,7 +61,7 @@ Qwen2.5-VL 有三个版本 ： 72B, 7B, 3B
 ### Overall Architecture
 
 Qwen2.5-VL 整体上由三部分组成 ：
-- Large Language Model : 使用 Qwen2.5 LLM 中预训练权重进行初始化，将 1D-RoPE 修改为与绝对时间对其的 MRoPE 
+- Large Language Model : 使用 Qwen2.5 LLM 中预训练权重进行初始化，将 1D-RoPE 修改为与绝对时间对齐的 MRoPE 
 
 - Vision Encoder ：redesigned ViT ，在训练和推理时，都会把输入图像的高和宽调整为 28 的倍数，采用 14 * 14 patch
 
