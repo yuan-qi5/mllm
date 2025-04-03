@@ -64,8 +64,8 @@ for tokenization :
 > 
 > **Byte-level BPE** : 用**字节**而不是**字符**来进行 BPE 操作
 
-![Qwen2.5_model_architecture](./pictures/Qwen2.5_model_architecture.png)
-
+![Qwen2.5_model_architecture](./pictures/%20Qwen2.5_model_architecture.png)
+ 
 ## Pre-training
 
 consists of three processes :
