@@ -87,12 +87,35 @@ CR = { (m × 384, n × 384) | m ∈ ℕ, n ∈ ℕ, 1 ≤ m, n, mn ≤ 9 }
 
 ### Vision-Language Alignment Data
 
+使用 ShareGPT4V 数据集，大约包含 1.2M 字幕与对话样本
 
 ### Vision-Language Pretraining Data
 
+包含 70% 的 visual-language data 和 30% 的 text-only data
+
+text-only data 来自 deepseek 基础的 LLM pre-training 语料库
+
+VL data : 
+
+- interleaved inmage-text data :
+
+- image captioning data :
+
+- optical character recognition data :
+
+- visual question-answering(QA) data :
+
+- visual grounding data :
+
+- grounded conversation data :
+
 ### Supervised Fine-tuning Data
 
+- general visual question-answering :
 
+- OCR and document understanding :
+
+- 
 
 
 ## Training Methodology
