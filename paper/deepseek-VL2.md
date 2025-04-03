@@ -97,25 +97,49 @@ text-only data 来自 deepseek 基础的 LLM pre-training 语料库
 
 VL data : 
 
-- interleaved inmage-text data :
+- interleaved inmage-text data : WiT, WikiHow, 30% random samples from OBELICS, 这个特定的混合比例是通过 DeepSeek-VL2-Tiny 的初步实验确定的。额外补充了中文内容数据集和内部数据集。
 
-- image captioning data :
+- image captioning data : Images captions 是 VLM 中的基础数据，提供视觉-文本信息之间的直接对齐。因为现有数据集
+-   - 存在严重的质量差异，开发了一个 image caption pipeline ，综合考虑 (1) OCR 提示 (2)原信息（如位置，相机位置等）(3) 相关的原始字幕作为 prompt ，在重新进行字幕生成
+    - 存在重复问题 ： 使用 Deepseek-Chat 进行评分来过滤筛选
+      
+- optical character recognition data : 使用 LateX OCR 和 12M RenderedText 及集中于中英文字符识别的内部数据集
 
-- optical character recognition data :
+- visual question-answering(QA) data : 发现 general QA data 有利于模型的预训练，故开发了一个综合视觉 QA 数据集 ：
+-   - general VQA : 使用来在 Deepseek-VL 的 general VQA data
+    - tabel and chart understanding : 使用 PubTabNet, FinTabNet，Docmatix
+    - web-to-code and plot-to-python generation : 利用 Websight 数据集和 Jupter Notebook 中公开的绘图代码来增强网页转代码能力，同时利用 DeepSeek-V2.5 对 Websight 中部分样本进行复制增强和自动生成的绘图代码来减少原始图转代码数据中的噪声
+    - QA with visual prompt : 将视觉指标（箭头、方框、圆圈和涂鸦）叠加到图像上，再创建 QA 对来构建数据提示理解数据
 
-- visual question-answering(QA) data :
+- visual grounding data :  将开源数据集中数据结构化，在训练时 question prompts 随机选择，<|ref|>、<|/ref|>、<|det|>、<|/det|>是特殊 token，<query> 是类别名臣或对象描述，$[[x_1, y_1, x_2, y_2], ... ]$是边界框列表，每个边界框对应于对象的位置。额外构建了负样本，即查询图像中没有的对象，以增强鲁棒性
 
-- visual grounding data :
+![DeepSeek-VL2.5_visual_grounding_format](./pictures/DeepSeek-VL2.5_visual_grounding_format.png)
 
 - grounded conversation data :
 
+![DeepSeek-VL2.5_grounded_conversation_format](./pictures/DeepSeek-VL2.5_grounded_conversation_format.png)
+
 ### Supervised Fine-tuning Data
 
-- general visual question-answering :
+> 没有额外说明即代表与预训练基本一致
 
-- OCR and document understanding :
+- general visual question-answering : 使用重新生成 response ，来解决公共视觉 QA 数据集的三个主要限制 ：(1) 简短的响应 (2) OCR质量差(3) 幻觉内容。 此外观察到在 DeepSeek-VL2-Tiny 的早期阶段，偶尔会在中文回复中不恰当地插入英文单词，但在大型模型中不存在，表明它是由有限的模型容量以及视觉语言预训练中英文和中文数据不平衡造成的，为此开发了一个内部中文 QA 数据集来缓解语言混合问题。
 
-- 
+- OCR and document understanding : 与预训练一样，额外增加了删除质量较差数据去清理数据集。对文档理解，发现先选择一些文档页面子集再生成多轮会话 QA 对可改进交互。
+
+- table and chart understanding
+
+- reasoning, logic, and mathematics :  加入更详细的推理过程来增强公共推理数据集，并且标准化回答格式，使得最终答案出现再回答末尾。此外观察到，在训练较小的 VLMs （如 DeepSeek-VL2-Tiny），详细的回答效果较差，简洁的回答表现更好
+
+- textbook and academic questions
+
+- visual grounding
+
+![DeepSeek-VL2_visual_grounding_SFT](./pictures/DeepSeek-VL2_visual_grounding_SFT.png)
+
+- grounded conversation
+
+- text-only datasets
 
 
 ## Training Methodology
