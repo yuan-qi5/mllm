@@ -113,11 +113,12 @@ VL data :
 
 - visual grounding data :  将开源数据集中数据结构化，在训练时 question prompts 随机选择，<|ref|>、<|/ref|>、<|det|>、<|/det|>是特殊 token，<query> 是类别名臣或对象描述，$[[x_1, y_1, x_2, y_2], ... ]$是边界框列表，每个边界框对应于对象的位置。额外构建了负样本，即查询图像中没有的对象，以增强鲁棒性
 
-![DeepSeek-VL2.5_visual_grounding_format](./pictures/DeepSeek-VL2.5_visual_grounding_format.png)
-
+![DeepSeek-VL2_visual_grounding_format](./pictures/DeepSeek-VL2_visual_ground_format.png)
+ 
 - grounded conversation data :
 
-![DeepSeek-VL2.5_grounded_conversation_format](./pictures/DeepSeek-VL2.5_grounded_conversation_format.png)
+
+![DeepSeek-VL2_grounded_conversation_format](./pictures/DeepSeek-VL2_grounded_conversation_format.png)
 
 ### Supervised Fine-tuning Data
 
