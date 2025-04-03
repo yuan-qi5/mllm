@@ -1,5 +1,5 @@
 # mllm
-my learning and understanding of mllm <br>
+my learning notes of mllm <br>
 - [paper][1]
   - [Qwen2.5-Omin][3]
   - [Qwen2.5-VL][4]
