@@ -6,6 +6,7 @@ my learning notes of mllm <br>
   - [Qwen2.5][5]
   - [Deepseek-VL2][6]
   - [VideoEspresso][7]
+  - [RoPE][8]
   
 - [code][2]
 
@@ -16,3 +17,4 @@ my learning notes of mllm <br>
 [5]:https://github.com/yuan-qi5/mllm/blob/main/paper/Qwen2.5.md
 [6]:https://github.com/yuan-qi5/mllm/blob/main/paper/deepseek-VL2.md
 [7]:https://github.com/yuan-qi5/mllm/blob/main/paper/VideoEspresso.md
+[8]:https://github.com/yuan-qi5/mllm/blob/main/paper/Roformer.md
