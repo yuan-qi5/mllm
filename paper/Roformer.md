@@ -26,12 +26,25 @@
 
 ### Derive RoPE
 
+**A 2D case** 
+
+![RoPE_2D_case](./pictures/RoPE_2D_case.png)
+
+**General form**
+
+![RoPE_general_form](./pictures/RoPE_general_form.png)
+
+**Efficient implementation**
+
+![RoPE_implentation](./pictures/RoPE_implementation.png)
+
+![RoPE_efficient_implementation](./pictures/RoPE_efficient_implementation.png)
 
 ### Investigate property
 
+**Long-term decay** ： 
 
+**RoPE with linear attention**
 
-
-
-
+![RoPE_linear_attention](./pictures/RoPE_linear_attention.png)
 
