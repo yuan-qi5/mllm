@@ -51,7 +51,7 @@ Qwen2.5-VL 有三个版本 ： 72B, 7B, 3B
 >
 > $$ Swish(x) = x * \sigma(x) $$
 >
-> $$ SwishGLU(x) = (xW_1) * Swish(xW_2) $$
+> $$ SwiGLU(x) = (xW_1) * Swish(xW_2) $$
 > 
 
 ![Qwen2.5-VL framework](./pictures/Qwen2.5-VL_framework.png) 
