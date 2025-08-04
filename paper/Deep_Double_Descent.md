@@ -157,4 +157,4 @@ Lable Noise：实验中概率 $p$ 的标签噪声是指在一个样本上进行�
 
 1. Understanding deep learning requires rethinking generalization.：神经网络足以适应随机标签。
 
-2. 
+2. fairseq: A fast, extensible toolkit for sequence modeling.
