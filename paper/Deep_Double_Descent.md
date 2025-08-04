@@ -1,4 +1,4 @@
-<img width="1280" height="917" alt="image" src="https://github.com/user-attachments/assets/0fa920e6-df79-479e-be12-ba035332b01c" /># Deep Double Descent: Where Bigger Models And More Data Hurt
+# Deep Double Descent: Where Bigger Models and More Data hurt
 
 ## Introduction
 
