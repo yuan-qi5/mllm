@@ -21,11 +21,11 @@
 
 - 提出用训练中的 **EMC**(*effective model complexity*) 来替代参数量，即给定一个数据分布和小误差阈值，EMC 是在给定训练过程能使平均训练误差小于误差阈值的最大样本数。因为 EMC 不仅取决于数据分布、分类器架构，还取决于训练过程，尤其是训练时间增加会增加 EMC。
 
-- 我们假设对许多模型和学习算法，双重下降是 EMC 的函数。若固定模型，增加训练时间，会观察到性能遵循 "epoch-wise double descent"。在欠拟合阶段（EMC 小于样本数量时），性能遵循经典的 U 型曲线；当 EMC 足够大于样本数量时，性能随着训练时间的推移而提高。作为推论，早停知对
+- 我们假设对许多模型和学习算法，双重下降是 EMC 的函数。若固定模型，增加训练时间，会观察到性能遵循 "epoch-wise double descent"。在欠拟合阶段（EMC 小于样本数量时），性能遵循经典的 U 型曲线；当 EMC 足够大于样本数量时，性能随着训练时间的推移而提高。作为推论，早停只对在临界参数化模型的一个相对狭窄的参数范围内才有效。
 
 ![epoch_parameters_double_descent](./pictures/epoch_parameters_double_descent.png)
 
-- 我们结果展示了测试性能作为训练样本数量的函数。由于测试误差在 EMC 与样本数量匹配的点附近达到峰值（从参数化不足到参数化过度2的过渡），增加样本数量会使该峰值向右移动。在一些特殊情况下会出现数据越多，性能越差的现象。
+- 我们结果展示了测试性能作为训练样本数量的函数。由于测试误差在 EMC 与样本数量匹配的点附近达到峰值（从参数化不足到参数化过度的过渡），增加样本数量会使该峰值向右移动。在一些特殊情况下会出现数据越多，性能越差的现象。
 
 ![test_function_sample](./pictures/test_function_sample.png)
 
@@ -38,14 +38,16 @@
 $$
  EMC_{\mathcal{D}, \epsilon} (\mathcal{T}) := \max    \{ n | \mathbb{E}_{S \sim \mathcal{D}^n} \left[ Error_S(\mathcal{T}(S)) \right] \leq \epsilon  \}
 $$
+
+![EMC_def](./pictures/EMC_definition.png)
  
 再非正式表述主要假设：
 
 **Hypothesis 1 (Generalized Double Descent hypothesis, informal)**: For any natural data distribution $\mathcal{D}$, neural-network-based training procedure $\mathcal{T}$ , and small $\epsilon > 0 $, if we consider the task of predicting labels based on n samples from $\mathcal{D}$ then:
 
-**Under-paremeterized regime**: If $EMC_{\mathcal{D}, \epsilon} (T)$ is sufficiently smaller than n, any perturbation of \mathcal{T} that increases its effective complexity will decrease the test error.
+**Under-paremeterized regime**: If $EMC_{\mathcal{D}, \epsilon} (T)$ is sufficiently smaller than n, any perturbation of $\mathcal{T}$ that increases its effective complexity will decrease the test error.
 
-**Over-parameterized regime**: If $EMC_{\mathcal{D} , \epsilon} (T)$ is sufficiently larger than n, any perturbation of T that increases its effective complexity will decrease the test error.
+**Over-parameterized regime**: If $EMC_{\mathcal{D} , \epsilon} (T)$ is sufficiently larger than n, any perturbation of $\mathcal{T}$ that increases its effective complexity will decrease the test error.
 
 **Critically parameterized regime**: If $EMC_{\mathcal{D} , \epsilon} (T)$, then a perturbation of $\mathcal{T}$ that increases its effective complexity might decrease or increase the test error.
 
@@ -56,15 +58,15 @@ $$
 
 - ResNets：通过缩放卷积层的宽度（number of filters）来参数化一系列 ResNet18。具体来说，使用层宽度 [k, 2k, 4k, 8k] 来改变 k。标准 RseNet18 对应于 k = 64
 
-- standard CNNs：考虑一个简单的 5 层 CNN 族，对于不同的 k，有 4 个宽度为 [k, 2k, 4k, 8k] 的卷积层，以及一个完全连接的层。
+- standard CNNs：考虑一个简单的 5 层 CNN 族，对于不同的 k，有 4 个宽度为 [k, 2k, 4k, 8k] 的卷积层，以及一个全连接的层。
 
-- Transformers：通过修改嵌入位数 dmodel 来缩放网络的大小，并按比例设置全连接层的宽度（$d_{ff} = 4 \times d_{model}$）
+- Transformers：通过修改嵌入层（embedding）维数 d_model 来缩放网络的大小，并按比例设置全连接层的宽度（ $d_{ff} = 4 \times d_{model}$ ）
 
-对于 ResNets 和 CNNs，使用交叉熵损失进行训练，并使用一下优化器：
+对于 ResNets 和 CNNs，使用交叉熵损失进行训练，并使用以下优化器：
 
 - Adam，4k epoch 的学习率为 0.0001
 
-- SGD, 500K 的梯度步长，学习率 $ \propto \frac{1}{\sqrt{T}}$
+- SGD, 500K 的梯度步长，学习率 $\propto \frac{1}{\sqrt{T}}$
 
 训练 Transformers 使用 80K steps 且 10% 标签平滑没有使用 drop-out
 
